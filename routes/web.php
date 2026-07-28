@@ -51,7 +51,7 @@ Route::delete('/{id}/destroy', [TeacherController::class, 'destroy'])->name('des
 });
 
 // Manajemen Data Kelas (Invokable Controller)
-Route::name('schoolclass.')->prefix('schoolclasses')->group(function() {
+Route::name('classes.')->prefix('classes')->group(function() {
 
 Route::get('/', IndexController::class)->name('index');
 // Halaman detail kelas
