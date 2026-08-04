@@ -21,17 +21,17 @@ Route::name('students.')->prefix('students')->group(function() {
 // Halaman daftar siswa
 Route::get('/', [StudentController::class, 'index'])->name('index');
 // Halaman detail siswa
-Route::get('/{id}', [StudentController::class, 'show'])->name('show');
+Route::get('/{id}', [StudentController::class, 'show'])->name('show')->whereNumber('id');
 // Halaman tambah siswa
-Route::get('/create', [StudentController::class, 'create'])->name('create');
+Route::get('/create', [StudentController::class, 'create'])->name('create')->whereNumber('id');
 // Halaman edit siswa
-Route::get('/{id}/edit', [StudentController::class, 'edit'])->name('edit');
+Route::get('/{id}/edit', [StudentController::class, 'edit'])->name('edit')->whereNumber('id');
 // Halaman menambah siswa
 Route::post('/store', [StudentController::class, 'store'])->name('store');
 // Halaman update siswa
-Route::put('/{id}/update', [StudentController::class, 'update'])->name('update');
+Route::put('/{id}/update', [StudentController::class, 'update'])->name('update')->whereNumber('id');
 // Halaman hapus siswa
-Route::delete('/{id}/destroy', [StudentController::class, 'destroy'])->name('destroy');
+Route::delete('/{id}/destroy', [StudentController::class, 'destroy'])->name('destroy')->whereNumber('id');
 });
 
 // Manajemen Data Guru (Action Controller Method)
