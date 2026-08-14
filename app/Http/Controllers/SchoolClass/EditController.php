@@ -10,8 +10,9 @@ class EditController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $id)
     {
-        return "Halaman edit kelas dengan id: " . $request->id;
+        $title = 'Sistem Sekolah - Edit Kelas';
+        return view('classes.edit', compact('title', 'id'));
     }
 }

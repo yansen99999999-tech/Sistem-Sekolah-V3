@@ -37,9 +37,9 @@ Route::delete('/{id}/destroy', [StudentController::class, 'destroy'])->name('des
 // Manajemen Data Guru (Action Controller Method)
 Route::name('teachers.')->prefix('teachers')->group(function() {
 Route::get('/', [TeacherController::class, 'index'])->name('index');
-Route::get('/{id}', [TeacherController::class, 'show'])->name('show');
-// Halaman tambah guru
 Route::get('/create', [TeacherController::class, 'create']  )->name('create');
+// Halaman tambah guru
+Route::get('/{id}', [TeacherController::class, 'show'])->name('show');
 // Halaman edit guru
 Route::get('/{id}/edit', [TeacherController::class, 'edit'])->name('edit');
 // Halaman menambah guru
@@ -55,9 +55,9 @@ Route::name('classes.')->prefix('classes')->group(function() {
 
 Route::get('/', IndexController::class)->name('index');
 // Halaman detail kelas
-Route::get('/{id}', ShowController::class)->name('show');
-// Halaman tambah kelas
 Route::get('/create', CreateController::class)->name('create');
+// Halaman tambah kelas
+Route::get('/{id}', ShowController::class)->name('show');
 // Halaman edit kelas
 Route::get('/{id}/edit', EditController::class)->name('edit');
 // Halaman menambah kelas
