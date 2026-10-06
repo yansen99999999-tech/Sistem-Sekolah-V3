@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -9,32 +10,21 @@ class StudentController extends Controller
     public function index()
     {
         $title = "Sistem Sekolah - Daftar Siswa";
-        $students =[
-        [
-            'id' => 1,
-            'nis' => '1001',
-            'name' => 'Andi',
-            'class' => 'XII TKJ 1',
-            'major' => 'TKJ',
-        ],
-        [
-            'id' => 2,
-            'nis' => '1002',
-            'name' => 'Budi',
-            'class' => 'XII AKL 1',
-            'major' => 'AKL'
-        ]
-        ];
+        $students = Student::select('id', 'nis', 'name', 'gender', 'class', 'major')->get();
+
+
         return view('students.index', [
             'title' => $title,
             'students' => $students
         ]);
     }
-    public function show($id)
+    public function show(Student $student)
     {
          $title = "Sistem Sekolah - Detail Siswa";
+
         return view('students.show', [
-            'title' => $title
+            'title' => $title,
+            'student' => $student
         ]);
     }
     public function create()
@@ -45,16 +35,31 @@ class StudentController extends Controller
             'title' => $title
         ]);          
     }
-    public function edit($id)
+    public function edit(Student $student)
     {
         $title = "Sistem Sekolah - Edit Siswa";
+
         return view('students.edit', [
-            'title' => $title
+            'title' => $title,
+            'student' => $student
         ]);
     }
     public function store(Request $request)
     {
-        return "Proses menambah siswa";
+        //vlaidasi data
+        $validatedRequest = $request->validate([
+            'nis' => ['required','string','size:4','unique:students,nis'],
+            'name' => ['required','string'],
+            'gender' => ['required','string','in:Laki-laki,Perempuan'],
+            'major' => ['required','string','in:TKJ,AKL,BiD'],
+            'class' => ['required','string']
+        ]);
+
+        //Tambahkan data ke database
+        Student::create($validatedRequest);
+
+        //handle if success
+        return redirect()->route('students.index');
     }
     public function update(Request $request, $id)
     {
