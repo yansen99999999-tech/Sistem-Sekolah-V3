@@ -61,12 +61,29 @@ class StudentController extends Controller
         //handle if success
         return redirect()->route('students.index');
     }
-    public function update(Request $request, $id)
+    public function update(Student $student, Request $request)
     {
-        return "Proses update siswa dengan id: " . $id;
+        //vlaidasi data
+        $validatedRequest = $request->validate([
+            'nis' => ['required','string','size:4','unique:students,nis,' . $student->id],
+            'name' => ['required','string'],
+            'gender' => ['required','string','in:Laki-laki,Perempuan'],
+            'major' => ['required','string','in:AKL,TKJ,BiD'],
+            'class' => ['required','string']
+        ]);
+
+        //Update data 
+        $student->update($validatedRequest);
+
+        //handle if success
+        return redirect()->route('students.index');
     }
-    public function destroy($id)
+    public function destroy(Student $student)
     {
-        return "Proses hapus siswa dengan id: " . $id;
+        //Hapus data
+        $student->delete();
+
+        //handle if success
+        return redirect()->route('students.index');
     }
 }
