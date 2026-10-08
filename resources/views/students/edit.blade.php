@@ -67,9 +67,9 @@
                 @error('major')
                         <span class=" text-red-500 py-02">{{ $message }}</span>
                 @enderror
-            </div>
+            </div>  
 
-            <div>
+            <div> 
                 <label for="class"
                     class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">Kelas</label>
                 <input type="text" id="class" name="class" value="{{ old('class', $student->class) }}"
