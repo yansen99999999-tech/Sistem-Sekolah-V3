@@ -28,7 +28,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($students as $student)
+                    @forelse ($students as $student)
                     <tr class="border-b border-[#EFEDE6] hover:bg-[#FAF9F5]">
                         <td class="px-5 py-4 font-display text-lg text-[#A16207]">
                             {{ $loop->iteration }}
@@ -60,7 +60,14 @@
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-5 py-4 text-center text-sm text-slate-500">
+                        Data siswa tidak tersedia.
+                        </td>
+                    </tr>
+                    @endforelse
+                    
                 </tbody>
             </table>
         </div>
