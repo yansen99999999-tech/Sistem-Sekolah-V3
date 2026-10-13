@@ -17,21 +17,28 @@ Route::get('/', function () {
 
  
 // Manajemen Data Siswa (Action Controller Method)
-Route::name('students.')->prefix('students')->group(function() {
-// Halaman daftar siswa
-Route::get('/', [StudentController::class, 'index'])->name('index');
-// Halaman detail siswa
-Route::get('/{student}', [StudentController::class, 'show'])->name('show')->whereNumber('id');
-// Halaman tambah siswa
-Route::get('/create', [StudentController::class, 'create'])->name('create')->whereNumber('id');
-// Halaman edit siswa
-Route::get('/{student}/edit', [StudentController::class, 'edit'])->name('edit')->whereNumber('id');
-// Halaman menambah siswa
-Route::post('/store', [StudentController::class, 'store'])->name('store');
-// Halaman update siswa
-Route::put('/{student}/update', [StudentController::class, 'update'])->name('update')->whereNumber('id');
-// Halaman hapus siswa
-Route::delete('/{student}/destroy', [StudentController::class, 'destroy'])->name('destroy')->whereNumber('id');
+Route::name('students.')->prefix('students')->group(function () {
+    // Halaman daftar siswa
+    Route::get('/', [StudentController::class, 'index'])->name('index');
+    
+    // Halaman tambah siswa (PINDAHKAN KE ATAS & HAPUS whereNumber yang salah)
+    Route::get('/create', [StudentController::class, 'create'])->name('create');
+    
+    // Halaman detail siswa
+    Route::get('/{student}', [StudentController::class, 'show'])->name('show')->whereNumber('student'); 
+    // Catatan: Kalau parameter di controller kamu $student, ganti whereNumber('id') jadi whereNumber('student') atau biarkan jika pakai ID.
+
+    // Halaman edit siswa
+    Route::get('/{student}/edit', [StudentController::class, 'edit'])->name('edit');
+    
+    // Halaman menambah siswa (store)
+    Route::post('/store', [StudentController::class, 'store'])->name('store');
+    
+    // Halaman update siswa
+    Route::put('/{student}/update', [StudentController::class, 'update'])->name('update');
+    
+    // Halaman hapus siswa
+    Route::delete('/{student}/destroy', [StudentController::class, 'destroy'])->name('destroy');
 });
 
 // Manajemen Data Guru (Action Controller Method)
