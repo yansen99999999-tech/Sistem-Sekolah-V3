@@ -18,15 +18,15 @@ Route::get('/', function () {
 
 
 //autentikasi
-Route::get('/login', [AuthController::class, 'LoginView'])->name('login-view');
-Route::post('/login', [AuthController::class, 'LoginPost'])->name('login-post');
-Route::get('/register', [AuthController::class, 'RegisterView'])->name('register-view');
-Route::post('/register', [AuthController::class, 'RegisterPost'])->name('register-post');
-
+Route::get('/login', [AuthController::class, 'LoginView'])->name('login-view')->middleware('guest');
+Route::post('/login', [AuthController::class, 'LoginPost'])->name('login-post')->middleware('guest');
+Route::get('/register', [AuthController::class, 'RegisterView'])->name('register-view')->middleware('guest');
+Route::post('/register', [AuthController::class, 'RegisterPost'])->name('register-post')->middleware('guest');
+Route::post('/logout', [AuthController::class, 'Logout'])->name('logout')->middleware('auth');
 
 
 // Manajemen Data Siswa (Action Controller Method)
-Route::name('students.')->prefix('students')->group(function () {
+Route::name('students.')->middleware(['role:teacher,student', 'auth'])->prefix('students')->group(function () {
     // Halaman daftar siswa
     Route::get('/', [StudentController::class, 'index'])->name('index');
     
@@ -51,7 +51,7 @@ Route::name('students.')->prefix('students')->group(function () {
 });
 
 // Manajemen Data Guru (Action Controller Method)
-Route::name('teachers.')->prefix('teachers')->group(function() {
+Route::name('teachers.')->middleware(['role:teacher', 'auth'])->prefix('teachers')->group(function() {
 Route::get('/', [TeacherController::class, 'index'])->name('index');
 Route::get('/create', [TeacherController::class, 'create']  )->name('create');
 // Halaman tambah guru
@@ -67,7 +67,7 @@ Route::delete('/{id}/destroy', [TeacherController::class, 'destroy'])->name('des
 });
 
 // Manajemen Data Kelas (Invokable Controller)
-Route::name('classes.')->prefix('classes')->group(function() {
+Route::name('classes.')->middleware(['role:teacher', 'auth'])->prefix('classes')->group(function() {
 
 Route::get('/', IndexController::class)->name('index');
 // Halaman detail kelas
@@ -86,4 +86,4 @@ Route::delete('/{id}/destroy', DestroyController::class)->name('destroy');
 });
 
 // Manajemen Jurusan Siswa (Resource Controller)
-Route::resource('majors', \App\Http\Controllers\MajorController::class);
+Route::resource('majors', \App\Http\Controllers\MajorController::class)->middleware(['role:teacher', 'auth']);

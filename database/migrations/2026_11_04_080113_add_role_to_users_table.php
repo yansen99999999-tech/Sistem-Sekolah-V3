@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            if (Schema::hasColumn('users', 'role')) {
-                // Jika kolom 'role' sudah ada, lakukan sesuatu (misalnya, hapus kolom tersebut)
+            if (!Schema::hasColumn('users', 'role')) {
+                // Jika kolom 'role' belum ada, tambahkan kolom tersebut
                 $table->string('role')->after('password')->comment('student and teacher');
             }
         });
@@ -25,7 +25,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            if (Schema::hasColumn('users', 'role')) {
+                $table->dropColumn('role');
+            }
         });
     }
 };

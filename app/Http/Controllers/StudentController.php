@@ -10,15 +10,31 @@ use Illuminate\Session\Store;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $title = "Sistem Sekolah - Daftar Siswa";
-        $students = Student::select('id', 'nis', 'name', 'gender', 'class', 'major')->get();
+        $search = $request->query('search');
+        $class = $request->query('class');
+        $major = $request->query('major');
 
+        $students = Student::select('id', 'nis', 'name', 'gender', 'class', 'major')
+        ->when($search, function ($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('nis', 'like', "%{$search}%");
+         })
+        ->when($class, fn ($query, $class) => $query->where('class','=', $class))
+        ->when($major, fn ($query, $major) => $query->where('major', '=', $major))
+        ->paginate(10)
+        ->withQueryString();
+        
+    $schoolClasses = ['10 AKL 1', '11 AKL 1', '12 AKL 1', '10 TKJ 1', '11 TKJ 1', '12 TKJ 1', '10 BiD 1', '11 BiD 1', '12 BiD 1', '10 AKL 2', '11 AKL 2', '12 AKL 2', '10 TKJ 2', '11 TKJ 2', '12 TKJ 2', '10 BiD 2', '11 BiD 2', '12 BiD 2'];
+    $majors = ['AKL', 'TKJ', 'BiD'];
 
         return view('students.index', [
             'title' => $title,
-            'students' => $students
+            'students' => $students,
+            'schoolClasses' => $schoolClasses,
+            'majors' => $majors
         ]);
     }
     public function show(Student $student)
